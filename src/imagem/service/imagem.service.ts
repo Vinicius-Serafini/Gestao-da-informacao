@@ -1,10 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { Imagem } from "./imagem.entity";
+import { Imagem } from "../model/imagem.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Tag } from "src/tag/model/tag.entity";
 const fs = require("fs")
-
-
 
 @Injectable()
 export class ImagemService {
@@ -15,15 +14,15 @@ export class ImagemService {
         ) { }
     
 
-    async create(imagem: Imagem) {
+    create(imagem: Imagem) {
         return this.repository.save(imagem);
     }
 
-    async delete(id: number) {
+    delete(id: number) {
         return this.repository.delete(id);
-     }
+    }
 
-    async findById(id: number) {
+    findById(id: number) {
         return this.repository.findOne(id);
     }
 
@@ -31,22 +30,32 @@ export class ImagemService {
         return this.repository.find();
     }
 
-    async update(imagem: Imagem){
-        return this.repository.update(imagem.id, imagem);
+    findByTags(tagsId: number[]) {
+        
+        return this.repository.createQueryBuilder("imagem")
+        .leftJoinAndSelect("imagem.imagemTag", "imagemTag")
+        .where("imagemTag.tagId IN (:...tagsId)", { tagsId: tagsId }) 
+        .getMany();
     }
 
-    async getImageBase64(path: string){
+    update(imagem: Imagem){
+        return this.repository.save(imagem);
+    }
+
+    getImageBase64(path: string){
         return fs.readFileSync(path, {encoding: "base64"})
     }
 
-    async deleteImageFile(path: string){
+    deleteImageFile(path: string){
+        let img_deleted = true
+
         fs.unlink(path, (err) => {
             if (err) {
-                return false;
+                img_deleted = false;
             }
         });
 
-        return true;
+        return img_deleted;
     }
 
 }

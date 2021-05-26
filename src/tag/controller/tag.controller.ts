@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { TagService } from "./tag.service";
+import { TagService } from "../service/tag.service";
 
 @Controller("/tag")
 export class TagController {

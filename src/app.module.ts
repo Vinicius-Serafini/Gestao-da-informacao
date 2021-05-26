@@ -2,38 +2,32 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ImagemController } from './imagem/imagem.controller';
-import { Imagem } from './imagem/imagem.entity';
-import { ImagemService } from './imagem/imagem.service';
-import { TagController } from './tag/tag.controller';
-import { Tag } from './tag/tag.entity';
-import { TagService } from './tag/tag.service';
+import { ImagemModule } from './imagem/imagem.module';
+import { Imagem } from './imagem/model/imagem.entity';
+import { Tag } from './tag/model/tag.entity';
+import { TagModule } from './tag/tag.module';
+import { ImagemTagModule } from './imagemTag/imagemTag.module' 
+import { ImagemTag } from './imagemTag/model/ImagemTag.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
         type: "sqlite",
         database: "database.db", 
+        logging: true,
         synchronize: true, 
         entities: [
           Imagem,
           Tag,
+          ImagemTag
           ]
       }),
-      TypeOrmModule.forFeature([
-        Imagem, 
-        Tag,
-      ]),
+    ImagemModule,
+    TagModule,
+    ImagemTagModule
   ],
-  controllers: [
-    AppController,
-    ImagemController,
-    TagController,
-  ],
-  providers: [
-    AppService,
-    ImagemService,
-    TagService,
-  ],
+  controllers: [ AppController ],
+  providers: [ AppService ],
 })
+
 export class AppModule {}

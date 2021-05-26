@@ -1,12 +1,11 @@
-import { Controller, Delete, Get, Param, Post, Put, Body, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { Controller, Delete, Get, Param, Post, Put, Body, UseInterceptors, UploadedFile, Query } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { Observable, of } from "rxjs";
-import { ImagemService } from "./imagem.service";
+import { ImagemService } from "../service/imagem.service";
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
-import { Imagem } from "./imagem.entity";
+import { Imagem } from "../model/imagem.entity";
+import { Tag } from "src/tag/model/tag.entity";
 const path = require('path');
-const fs = require('fs');
 
 
 @Controller("/imagem")
@@ -28,21 +27,22 @@ export class ImagemController {
 
     }))
     async uploadFile(@UploadedFile() file, @Body() body) {
-        const { titulo, descricao } = body;
+        const imagem = JSON.parse(body.imagem);
 
         let img = new Imagem();
-        img.titulo = titulo;
-        img.descricao = descricao; 
+        img.titulo = imagem.titulo;
+        img.descricao = imagem.descricao; 
         img.path = file.path;
-
-        return this.service.create(img);  
+        img.imagemTag = imagem.tags;
+        
+        return await this.service.create(img);
+    
     }
 
     @Get()
     async findAll() {
         let img_list = await this.service.findAll();
 
-        console.log(img_list)
         return img_list.map(img => ({
             titulo: img.titulo,
             descricao: img.descricao,
@@ -50,7 +50,7 @@ export class ImagemController {
         }));
     }
 
-    @Get(":id")
+    @Get("/findById/:id")
     async findById(@Param() id: number) {
         let {titulo, descricao, path} = await this.service.findById(id)
         let img_base64 =  this.service.getImageBase64(path);
@@ -58,6 +58,12 @@ export class ImagemController {
         return ({titulo, descricao, img_base64}); 
     }
 
+    @Get('/findByTags')
+    async findByTags(@Query("tags") tags) {
+        const JSONtags = JSON.parse(tags);
+
+        return this.service.findByTags(JSONtags)
+    }
 
     @Delete()
     async delete(@Body() body) {
@@ -71,8 +77,8 @@ export class ImagemController {
     }
 
     @Put()
-    async update(@Body() imagem){
-        return this.service.update(imagem);
+    async update(@Body() body){
+        return await this.service.update(body);
     }
 
 

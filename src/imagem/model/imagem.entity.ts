@@ -1,5 +1,5 @@
-import { Tag } from "src/tag/tag.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ImagemTag } from "src/imagemTag/model/ImagemTag.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: "imagem"})
 export class Imagem {
@@ -15,7 +15,7 @@ export class Imagem {
     @Column({name: "path", type: "varchar", length: 100})
     path: string; 
 
-    @ManyToMany(() => Tag)
-    @JoinTable()
-    tags: Tag[];
+    @OneToMany(type => ImagemTag, imagemTag => imagemTag.imagem,
+        { cascade: ['insert', 'update']} )
+    imagemTag: ImagemTag[];
 }

@@ -4,7 +4,6 @@ import { ImagemService } from "../service/imagem.service";
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { Imagem } from "../model/imagem.entity";
-import { Tag } from "src/tag/model/tag.entity";
 const path = require('path');
 
 

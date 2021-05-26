@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { Imagem } from "../model/imagem.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Tag } from "src/tag/model/tag.entity";
 const fs = require("fs")
 
 @Injectable()

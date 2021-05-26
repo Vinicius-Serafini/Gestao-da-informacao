@@ -33,5 +33,9 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-#DB tools
+#DB
 *.exe
+*.db
+
+#Imagems de upload
+/uploads/images/*

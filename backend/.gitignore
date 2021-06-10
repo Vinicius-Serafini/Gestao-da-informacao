@@ -39,9 +39,3 @@ lerna-debug.log*
 
 #Imagems de upload
 /uploads/images/*
-
-#Arquivos de texto
-Pra fazer.txt
-Entregas.txt
-Duvidas.txt 
-Cola.txt

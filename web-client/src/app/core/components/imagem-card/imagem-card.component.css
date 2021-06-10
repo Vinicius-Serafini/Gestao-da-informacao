@@ -1,0 +1,30 @@
+.card {
+	background: white;
+	margin-bottom: 20px;
+	border-radius: 4px;
+	box-shadow: 0 2px 6px rgba(50,50,90,.1);
+	break-inside: avoid-column;
+	
+    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.2));
+    font-family: roboto;
+    border-radius: 18px;
+}
+
+.card-image img {
+	display: block;
+	max-width: 100%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.card-title {
+    text-align: center;
+}
+
+.card-title p {
+    margin: auto;
+    padding: 5px 0 5px 0;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: .875em;
+	line-height: 1.4em;
+}
